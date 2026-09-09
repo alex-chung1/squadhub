@@ -16,3 +16,8 @@ server/.env
 
 # Logs
 *.log
+
+#Supabase DB Keys
+.env
+.env.*
+!.env.example
