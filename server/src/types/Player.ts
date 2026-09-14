@@ -1,30 +1,40 @@
-export type MatchTeam = "A" | "B";
+export type PositionCategory = "DEF" | "MID" | "ATT";
 
-export type ApprovalStatus = "PENDING" | "APPROVED" | "REJECTED";
+export type PlayerPosition =
+  | "GK"
+  | "RB"
+  | "CB"
+  | "LB"
+  | "CDM"
+  | "CM"
+  | "CAM"
+  | "RW"
+  | "LW"
+  | "ST";
 
-export interface PlayerMatchStat {
+export type SkillLevel = 1 | 2 | 3;
+
+export const POSITION_CATEGORIES = {
+  DEF: ["GK", "RB", "CB", "LB"],
+  MID: ["CDM", "CM", "CAM"],
+  ATT: ["RW", "LW", "ST"],
+} as const;
+
+export interface Player {
   id: number;
 
-  playerId: number;
-  matchId: number;
-  team: MatchTeam;
+  name: string;
+  playerNumber: number;
+  position: PlayerPosition;
 
-  // Stats submitted by player
-  goals: number;
-  assists: number;
+  // Admin-only rating used to generate balanced teams
+  skillLevel: SkillLevel;
 
-  // Calculated by SquadHub
-  performanceScore: number;
-  ratingBefore: number;
-  suggestedRatingChange: number;
+  // FIFA-style public rating that changes over time
+  overallRating: number;
 
-  // Admin approval
-  approvedRatingChange?: number;
-  ratingAfter?: number;
-  approvalStatus: ApprovalStatus;
-
-  approvedBy?: string;
-  approvedAt?: Date;
+  imageUrl?: string;
 
   createdAt: Date;
+  updatedAt: Date;
 }
