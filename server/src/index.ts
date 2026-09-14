@@ -1,18 +1,14 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import playerRoutes from './routes/playerRoutes';
 
 const app = express();
-const PORT = 3000;
 
-app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    message: "SquadHub backend is running",
-  });
-});
+app.use('/players', playerRoutes);
+
+const PORT = 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
