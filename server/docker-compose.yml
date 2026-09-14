@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: squadhub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: squadhub
+      POSTGRES_PASSWORD: squadhub
+      POSTGRES_DB: squadhub
+    ports:
+      - '5432:5432'
+    volumes:
+      - squadhub-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  squadhub-postgres-data:
