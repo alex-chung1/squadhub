@@ -10,7 +10,7 @@ datasource db {
 model Player {
   id      Int    @id @default(autoincrement())
   name    String
-  rating  Int?
+  rating Int @default(50)
 
   generatedTeams GeneratedTeam[]
   ratingHistory  RatingHistory[]

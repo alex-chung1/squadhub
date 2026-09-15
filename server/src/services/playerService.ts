@@ -1,17 +1,19 @@
-import prisma from '../db/prisma';
+import prisma from "../db/prisma";
 
-export async function createPlayer(name: string) {
+export async function createPlayer(name: string, rating: number) {
   return prisma.player.create({
     data: {
       name,
+      rating,
     },
   });
 }
 
 export async function getPlayers() {
+  console.log("Fetching players...");
   return prisma.player.findMany({
     orderBy: {
-      name: 'asc',
+      name: "asc",
     },
   });
 }

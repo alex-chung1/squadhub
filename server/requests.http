@@ -1,10 +1,21 @@
 ### Create player
-POST http://localhost:3000/players
+POST http://localhost:3000/players/
 Content-Type: application/json
 
 {
-  "name": "Alex"
+  "name": "Munem",
+  "rating": 85
 }
 
 ### Get players
-GET http://localhost:3000/players
+GET http://localhost:3000/players/
+
+
+
+### Generate Team
+POST http://localhost:3000/teams/
+Content-Type: application/json
+
+{
+  "playerIds": [1, 2, 3, 4]
+}

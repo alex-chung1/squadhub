@@ -1,6 +1,8 @@
-import { Player } from './Player';
+import { Player } from "./Player";
+
 export interface GeneratedTeam {
   id: number;
   players: Player[];
   totalRating: number;
+  averageRating: number;
 }

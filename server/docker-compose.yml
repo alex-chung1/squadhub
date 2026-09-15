@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: squadhub
-      POSTGRES_PASSWORD: squadhub
+      POSTGRES_PASSWORD: pass1234
       POSTGRES_DB: squadhub
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - squadhub-postgres-data:/var/lib/postgresql/data
 
