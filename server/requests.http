@@ -3,13 +3,13 @@ POST http://localhost:3000/players/
 Content-Type: application/json
 
 {
-  "name": "Munem",
-  "rating": 85
+  "name": "Alex",
+  "rating": 80
 }
+
 
 ### Get players
 GET http://localhost:3000/players/
-
 
 
 ### Generate Team
@@ -17,5 +17,5 @@ POST http://localhost:3000/teams/
 Content-Type: application/json
 
 {
-  "playerIds": [1, 2, 3, 4]
+  "playerIds": [1, 2, 3, 4, 5, 6, 7, 8, 9]
 }
