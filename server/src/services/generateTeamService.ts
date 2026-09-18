@@ -1,6 +1,6 @@
 import { Player } from '../domain/Player';
 import { GeneratedTeam } from '../domain/GeneratedTeam';
-import prisma from '../db/prisma';
+import { prisma } from '../db/prisma';
 
 export async function generateTeams(playerIds: number[]): Promise<[GeneratedTeam, GeneratedTeam]> {
   const players = await prisma.player.findMany({
