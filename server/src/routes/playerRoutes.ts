@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { createPlayer, getPlayers } from "../services/playerService";
+import { Router } from 'express';
+import { createPlayer, getPlayers } from '../services/playerService';
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const { name, rating } = req.body;
 
-  if (!name || typeof name !== "string") {
+  if (!name || typeof name !== 'string') {
     return res.status(400).json({
-      error: "Name is required",
+      error: 'Name is required',
     });
   }
 
@@ -17,8 +17,7 @@ router.post("/", async (req, res) => {
   return res.status(201).json(player);
 });
 
-router.get("/", async (_req, res) => {
-  console.log("Fetching players...");
+router.get('/', async (_req, res) => {
   const players = await getPlayers();
 
   return res.json(players);
