@@ -13,7 +13,9 @@ export async function loader() {
     throw new Error('Failed to fetch players');
   }
 
-  return (await response.json()) as Player[];
+  const result = (await response.json()) as Player[];
+
+  return result;
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
