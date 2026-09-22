@@ -11,6 +11,9 @@ client/.env
 server/.env
 .env
 
+# React Router
+client/.react-router
+
 # macOS
 .DS_Store
 
