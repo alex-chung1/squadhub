@@ -1,57 +1,39 @@
-// import type { Route } from './+types/home';
-// import PlayerCard from '~/components/PlayerCard';
-// import type { Player } from '~/types/player';
-
-// export function meta({}: Route.MetaArgs) {
-//   return [{ title: 'SquadHub' }, { name: 'description', content: 'SquadHub player database' }];
-// }
-
-// export async function loader() {
-//   const response = await fetch('http://localhost:3000/players');
-
-//   if (!response.ok) {
-//     throw new Error('Failed to fetch players');
-//   }
-
-//   const result = (await response.json()) as Player[];
-
-//   return result;
-// }
-
-// export default function Home({ loaderData }: Route.ComponentProps) {
-//   const players = loaderData;
-
-//   return (
-//     <main className="p-8">
-//       <h1 className="mb-6 text-3xl font-bold">Players</h1>
-
-//       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-//         {players.map((player) => (
-//           <PlayerCard key={player.id} player={player} />
-//         ))}
-//       </div>
-//     </main>
-//   );
-// }
-
 import { useMemo, useState } from "react";
+import { Link } from "react-router";
+
+import type { Route } from "./+types/home";
 import PlayerCard from "~/components/PlayerCard";
 import type { Player } from "~/types/player";
 
-const players: Player[] = [
-  { id: 1, name: "Monu", rating: 3 },
-  { id: 2, name: "Jarif", rating: 3 },
-  { id: 3, name: "Munem", rating: 3 },
-  { id: 4, name: "Tahsin", rating: 3 },
-  { id: 5, name: "Rafael", rating: 2 },
-  { id: 6, name: "Mirbz", rating: 2 },
-  { id: 7, name: "Adoo", rating: 1 },
-  { id: 8, name: "Effie", rating: 1 },
-];
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "SquadHub" },
+    {
+      name: "description",
+      content: "SquadHub team roster",
+    },
+  ];
+}
 
-export default function Home() {
+export async function loader() {
+  const response = await fetch("http://localhost:3000/players");
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch players");
+  }
+
+  const result = (await response.json()) as Player[];
+
+  return result;
+}
+
+type PositionFilter = "ALL" | "ATT" | "MID" | "DEF";
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const players = loaderData;
+
   const [search, setSearch] = useState("");
-  const [ratingFilter, setRatingFilter] = useState<number | null>(null);
+  const [positionFilter, setPositionFilter] = useState<PositionFilter>("ALL");
 
   const filteredPlayers = useMemo(() => {
     return players.filter((player) => {
@@ -59,125 +41,398 @@ export default function Home() {
         .toLowerCase()
         .includes(search.toLowerCase());
 
-      const matchesRating =
-        ratingFilter === null || player.rating === ratingFilter;
+      const matchesPosition =
+        positionFilter === "ALL" || player.position === positionFilter;
 
-      return matchesSearch && matchesRating;
+      return matchesSearch && matchesPosition;
     });
-  }, [search, ratingFilter]);
+  }, [players, search, positionFilter]);
+
+  const positionFilters: {
+    label: string;
+    value: PositionFilter;
+  }[] = [
+    {
+      label: "All",
+      value: "ALL",
+    },
+    {
+      label: "Attackers",
+      value: "ATT",
+    },
+    {
+      label: "Midfielders",
+      value: "MID",
+    },
+    {
+      label: "Defenders",
+      value: "DEF",
+    },
+  ];
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-10 dark:bg-gray-950">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold tracking-[0.3em] text-gray-400">
-              SQUADHUB
+    <main className="min-h-screen bg-[#070b12] text-white">
+      {/* ================================= */}
+      {/* HEADER */}
+      {/* ================================= */}
+
+      <header className="border-b border-white/[0.08]">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 lg:px-10">
+          {/* LOGO */}
+
+          <div className="flex items-center gap-3">
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-xl
+                bg-emerald-400
+                font-black
+                text-emerald-950
+                shadow-[0_0_25px_rgba(52,211,153,0.15)]
+              "
+            >
+              S
+            </div>
+
+            <div>
+              <h1 className="text-lg font-black tracking-tight">SquadHub</h1>
+
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
+                Football Squad
+              </p>
+            </div>
+          </div>
+
+          {/* GENERATE TEAMS */}
+
+          <Link
+            to="/generate-teams"
+            className="
+              flex
+              items-center
+              gap-2
+              rounded-xl
+              bg-emerald-400
+              px-4
+              py-2.5
+              text-sm
+              font-black
+              text-emerald-950
+              shadow-[0_0_20px_rgba(52,211,153,0.15)]
+              transition-all
+              hover:-translate-y-0.5
+              hover:bg-emerald-300
+              hover:shadow-[0_0_25px_rgba(52,211,153,0.25)]
+            "
+          >
+            {/* Shuffle Icon */}
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <path d="m18 14 4 4-4 4" />
+              <path d="m18 2 4 4-4 4" />
+              <path d="M2 18h1.5a6 6 0 0 0 5-2.7L15.5 4.7A6 6 0 0 1 20.5 2H22" />
+              <path d="M2 6h1.5a6 6 0 0 1 5 2.7l1.2 1.8" />
+              <path d="M14.5 15.3l1 1.5a6 6 0 0 0 5 2.7H22" />
+            </svg>
+
+            <span className="hidden sm:inline">Generate Teams</span>
+
+            <span className="sm:hidden">Generate</span>
+          </Link>
+        </div>
+      </header>
+
+      {/* ================================= */}
+      {/* PAGE CONTENT */}
+      {/* ================================= */}
+
+      <div className="mx-auto max-w-[1600px] px-6 py-10 lg:px-10">
+        {/* ================================= */}
+        {/* ROSTER TITLE */}
+        {/* ================================= */}
+
+        <section>
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <div
+                  className="
+                    h-2
+                    w-2
+                    rounded-full
+                    bg-emerald-400
+                    shadow-[0_0_10px_rgba(52,211,153,0.8)]
+                  "
+                />
+
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-emerald-400">
+                  My Squad
+                </span>
+              </div>
+
+              <h2 className="text-4xl font-black tracking-tight sm:text-5xl">
+                Team Roster
+              </h2>
+
+              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-400">
+                Your complete SquadHub roster. View player ratings and positions
+                or generate balanced teams for your next match.
+              </p>
+            </div>
+
+            {/* PLAYER COUNT */}
+
+            <div className="flex items-center gap-3 text-sm text-slate-500">
+              <span className="font-black text-white">{players.length}</span>
+
+              <span>
+                {players.length === 1 ? "player" : "players"} in squad
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* ================================= */}
+        {/* CONTROLS */}
+        {/* ================================= */}
+
+        <section className="mt-10">
+          <div
+            className="
+              flex
+              flex-col
+              gap-4
+              border-y
+              border-white/[0.08]
+              py-5
+              xl:flex-row
+              xl:items-center
+              xl:justify-between
+            "
+          >
+            {/* POSITION FILTERS */}
+
+            <div className="flex flex-wrap gap-2">
+              {positionFilters.map((filter) => {
+                const active = positionFilter === filter.value;
+
+                return (
+                  <button
+                    key={filter.value}
+                    type="button"
+                    onClick={() => setPositionFilter(filter.value)}
+                    className={`
+                      rounded-xl
+                      px-4
+                      py-2.5
+                      text-xs
+                      font-black
+                      transition-all
+                      ${
+                        active
+                          ? "bg-white text-slate-950 shadow-lg"
+                          : "border border-white/[0.08] bg-white/[0.03] text-slate-400 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                      }
+                    `}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* SEARCH */}
+
+            <div className="relative w-full xl:w-72">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="
+                  absolute
+                  left-4
+                  top-1/2
+                  h-4
+                  w-4
+                  -translate-y-1/2
+                  text-slate-500
+                "
+              >
+                <circle cx="11" cy="11" r="8" />
+
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+
+              <input
+                type="text"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search squad..."
+                className="
+                  h-11
+                  w-full
+                  rounded-xl
+                  border
+                  border-white/[0.08]
+                  bg-white/[0.03]
+                  pl-11
+                  pr-4
+                  text-sm
+                  text-white
+                  outline-none
+                  transition
+                  placeholder:text-slate-600
+                  hover:border-white/20
+                  focus:border-emerald-400/40
+                  focus:bg-white/[0.05]
+                  focus:ring-2
+                  focus:ring-emerald-400/10
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* ================================= */}
+        {/* FILTER RESULT COUNT */}
+        {/* ================================= */}
+
+        <section className="mt-7">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">
+              {positionFilter === "ALL"
+                ? "All Players"
+                : positionFilter === "ATT"
+                ? "Attackers"
+                : positionFilter === "MID"
+                ? "Midfielders"
+                : "Defenders"}
             </p>
 
-            <h1 className="mt-2 text-4xl font-bold text-gray-900 dark:text-white">
-              My Squad
-            </h1>
-
-            <p className="mt-1 text-gray-500">{players.length} Players</p>
+            <p className="text-xs text-slate-600">
+              {filteredPlayers.length} shown
+            </p>
           </div>
+        </section>
 
-          <button className="rounded-xl bg-gray-900 px-5 py-3 font-semibold text-white transition hover:bg-gray-700 dark:bg-white dark:text-gray-900">
-            + Add Player
-          </button>
-        </div>
+        {/* ================================= */}
+        {/* PLAYER GRID */}
+        {/* ================================= */}
 
-        {/* Controls */}
-        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-          {/* Rating filters */}
-          <div className="flex gap-2">
-            <FilterButton
-              active={ratingFilter === null}
-              onClick={() => setRatingFilter(null)}
-            >
-              All
-            </FilterButton>
-
-            <FilterButton
-              active={ratingFilter === 3}
-              onClick={() => setRatingFilter(3)}
-            >
-              ★★★
-            </FilterButton>
-
-            <FilterButton
-              active={ratingFilter === 2}
-              onClick={() => setRatingFilter(2)}
-            >
-              ★★
-            </FilterButton>
-
-            <FilterButton
-              active={ratingFilter === 1}
-              onClick={() => setRatingFilter(1)}
-            >
-              ★
-            </FilterButton>
-          </div>
-
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search players..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-gray-400 md:w-64 dark:border-gray-800 dark:bg-gray-900 dark:text-white"
-          />
-        </div>
-
-        {/* Player Cards */}
         {filteredPlayers.length > 0 ? (
-          <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <section
+            className="
+              mt-8
+              grid
+              grid-cols-1
+              justify-items-center
+              gap-x-7
+              gap-y-12
+              min-[500px]:grid-cols-2
+              md:grid-cols-3
+              lg:grid-cols-4
+              xl:grid-cols-5
+              2xl:grid-cols-6
+            "
+          >
             {filteredPlayers.map((player) => (
               <PlayerCard key={player.id} player={player} />
             ))}
-          </div>
+          </section>
         ) : (
-          <div className="py-20 text-center">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              No players found
-            </h2>
+          /* ================================= */
+          /* EMPTY FILTER STATE */
+          /* ================================= */
 
-            <p className="mt-2 text-gray-500">
-              Try changing your search or rating filter.
-            </p>
-          </div>
+          <section
+            className="
+              mt-8
+              flex
+              min-h-80
+              items-center
+              justify-center
+              rounded-3xl
+              border
+              border-dashed
+              border-white/10
+              bg-white/[0.015]
+            "
+          >
+            <div className="px-6 text-center">
+              <div
+                className="
+                  mx-auto
+                  flex
+                  h-14
+                  w-14
+                  items-center
+                  justify-center
+                  rounded-2xl
+                  border
+                  border-white/[0.08]
+                  bg-white/[0.04]
+                "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-6 w-6 text-slate-500"
+                >
+                  <circle cx="11" cy="11" r="8" />
+
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </div>
+
+              <h3 className="mt-5 text-lg font-black">No players found</h3>
+
+              <p className="mt-2 text-sm text-slate-500">
+                Try another player name or position.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setPositionFilter("ALL");
+                }}
+                className="
+                  mt-5
+                  text-sm
+                  font-bold
+                  text-emerald-400
+                  transition
+                  hover:text-emerald-300
+                "
+              >
+                Clear filters
+              </button>
+            </div>
+          </section>
         )}
-
-        {/* Generate Teams */}
-        <div className="mt-12 flex justify-center">
-          <button className="rounded-xl bg-green-600 px-7 py-4 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-green-700">
-            ⚽ Generate Teams
-          </button>
-        </div>
       </div>
     </main>
-  );
-}
-
-type FilterButtonProps = {
-  children: React.ReactNode;
-  active: boolean;
-  onClick: () => void;
-};
-
-function FilterButton({ children, active, onClick }: FilterButtonProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-        active
-          ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
-          : "bg-white text-gray-500 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800"
-      }`}
-    >
-      {children}
-    </button>
   );
 }

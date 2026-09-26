@@ -5,11 +5,17 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+enum Position {
+  ATT
+  MID
+  DEF
+}
 
 model Player {
   id      Int    @id @default(autoincrement())
   name    String
   rating Int @default(50)
+  position Position @default(MID)
 
   generatedTeams GeneratedTeam[]
   ratingHistory  RatingHistory[]

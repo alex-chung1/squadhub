@@ -1,235 +1,509 @@
-<<<<<<< HEAD
-// import type { Player } from '~/types/player';
-
-// type PlayerCardProps = {
-//   player: Player;
-// };
-
-// export default function PlayerCard({ player }: PlayerCardProps) {
-//   return (
-//     <div className="w-48 rounded-xl bg-gray-100 p-4 dark:bg-gray-900">
-//       <div className="relative">
-//         <div className="flex h-48 items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800">
-//           <span className="text-4xl font-bold">{player.rating}</span>
-//         </div>
-//       </div>
-
-//       <div className="mt-2 text-center">
-//         <h2 className="font-bold">{player.name}</h2>
-//       </div>
-//     </div>
-//   );
-// }
-
-=======
->>>>>>> 4f55dd58cb2cd2aca150e9e71b1cc587bd4df86d
 import type { Player } from "~/types/player";
 
 type PlayerCardProps = {
   player: Player;
 };
 
-function getCardStyle(rating: number) {
-  if (rating >= 80) {
+type CardStyle = {
+  tier: string;
+  background: string;
+  border: string;
+  text: string;
+  subText: string;
+  avatar: string;
+  glow: string;
+  accent: string;
+};
+
+function getCardStyle(rating: number): CardStyle {
+  // TOTS — 90+
+  if (rating >= 90) {
     return {
-      tier: "Gold",
+      tier: "TOTS",
       background:
-        "bg-[linear-gradient(135deg,#8f6817_0%,#f8e38a_18%,#c99b2e_38%,#fff1a8_52%,#b88620_72%,#f5d76e_88%,#8f6817_100%)]",
-      border: "border-yellow-600/60",
+        "linear-gradient(145deg, #020617 0%, #082f49 25%, #0369a1 48%, #1d4ed8 70%, #020617 100%)",
+      border: "#67e8f9",
+      text: "#ffffff",
+      subText: "#a5f3fc",
+      avatar: "rgba(2, 6, 23, 0.55)",
+      glow: "rgba(34, 211, 238, 0.45)",
+      accent: "rgba(103, 232, 249, 0.55)",
     };
   }
 
+  // GOLD — 75–89
+  if (rating >= 75) {
+    return {
+      tier: "GOLD",
+      background:
+        "linear-gradient(145deg, #17130a 0%, #6f5318 22%, #d6b65b 46%, #f8e9a1 58%, #a77b1f 78%, #241b08 100%)",
+      border: "#f6df85",
+      text: "#fff8dc",
+      subText: "#f7dfa0",
+      avatar: "rgba(30, 23, 8, 0.70)",
+      glow: "rgba(234, 179, 8, 0.35)",
+      accent: "rgba(255, 239, 170, 0.55)",
+    };
+  }
+
+  // SILVER — 65–74
   if (rating >= 65) {
     return {
-      tier: "Silver",
+      tier: "SILVER",
       background:
-        "bg-[linear-gradient(135deg,#73777c_0%,#e8ebed_18%,#9da2a6_38%,#f8f9fa_52%,#858a8f_72%,#d9dcdf_88%,#74787c_100%)]",
-      border: "border-gray-400/70",
+        "linear-gradient(145deg, #1f2937 0%, #64748b 24%, #d8dee5 45%, #ffffff 56%, #9ca3af 75%, #374151 100%)",
+      border: "#f1f5f9",
+      text: "#ffffff",
+      subText: "#f1f5f9",
+      avatar: "rgba(15, 23, 42, 0.75)",
+      glow: "rgba(203, 213, 225, 0.40)",
+      accent: "rgba(255, 255, 255, 0.65)",
     };
   }
 
+  // BRONZE — 0–64
   return {
-    tier: "Bronze",
+    tier: "BRONZE",
     background:
-      "bg-[linear-gradient(135deg,#6f351d_0%,#e6a06f_18%,#9c5431_38%,#f1b482_52%,#8b4729_72%,#d88b5c_88%,#68301c_100%)]",
-    border: "border-orange-800/60",
+      "linear-gradient(145deg, #261007 0%, #663018 22%, #b8663c 45%, #e0a078 57%, #844123 77%, #2c1208 100%)",
+    border: "#e8a57c",
+    text: "#fff1e8",
+    subText: "#f5c4a5",
+    avatar: "rgba(38, 16, 7, 0.70)",
+    glow: "rgba(194, 92, 45, 0.35)",
+    accent: "rgba(255, 190, 145, 0.55)",
   };
 }
 
 export default function PlayerCard({ player }: PlayerCardProps) {
-<<<<<<< HEAD
-  const tier = getPlayerTier(player.rating);
-
-  return (
-    <div
-      className={`group w-52 overflow-hidden rounded-2xl border-2 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl dark:bg-gray-900 ${tier.border}`}
-    >
-      {/* Top */}
-      <div className="flex items-start justify-between">
-        <div>
-          <span className="text-4xl font-black text-gray-900 dark:text-white">
-            {player.rating}
-          </span>
-
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Overall
-          </p>
-        </div>
-
-        <button className="text-xl text-gray-400 transition hover:text-gray-900 dark:hover:text-white">
-          •••
-        </button>
-      </div>
-
-      {/* Avatar */}
-      <div className="my-6 flex justify-center">
-        <div
-          className={`flex h-28 w-28 items-center justify-center rounded-full text-4xl font-black transition group-hover:scale-105 ${tier.avatar}`}
-        >
-          {player.name.charAt(0).toUpperCase()}
-        </div>
-      </div>
-
-      {/* Player Info */}
-      <div className="text-center">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-          {player.name}
-        </h2>
-
-        <div className="mt-3 flex justify-center">
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${tier.badge}`}
-          >
-            {tier.name}
-          </span>
-        </div>
-=======
   const card = getCardStyle(player.rating);
 
   return (
     <div
-      className={`
-        group relative h-72 w-52 overflow-hidden
-        rounded-[28px] border
-        ${card.background}
-        ${card.border}
-        shadow-xl transition-all duration-300
-        hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
-      `}
+      className="
+        group
+        relative
+        h-72
+        w-52
+        overflow-hidden
+        rounded-[28px]
+        transition-all
+        duration-300
+        hover:-translate-y-2
+        hover:scale-[1.03]
+      "
+      style={{
+        background: card.background,
+        border: `2px solid ${card.border}`,
+        boxShadow: `
+          0 15px 35px rgba(0,0,0,0.35),
+          0 0 25px ${card.glow},
+          inset 0 0 25px rgba(255,255,255,0.10)
+        `,
+      }}
     >
-      {/* Metallic texture */}
+      {/* INNER BORDER */}
       <div
         className="
-          pointer-events-none absolute inset-0 opacity-20
-          bg-[repeating-linear-gradient(125deg,transparent_0px,transparent_8px,rgba(255,255,255,0.4)_9px,transparent_10px)]
+          pointer-events-none
+          absolute
+          inset-[5px]
+          z-[2]
+          rounded-[23px]
         "
+        style={{
+          border: `1px solid ${card.accent}`,
+        }}
       />
 
-      {/* Metallic light reflection */}
+      {/* ================================= */}
+      {/* CRYSTAL FACETS */}
+      {/* ================================= */}
+
+      {/* Top-left crystal */}
       <div
         className="
-          pointer-events-none absolute -left-20 top-20
-          h-32 w-[150%] -rotate-12
-          bg-gradient-to-b from-white/5 via-white/35 to-white/5
+          pointer-events-none
+          absolute
+          -left-6
+          -top-5
+          h-32
+          w-32
         "
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.03))",
+          clipPath: "polygon(0 0, 100% 0, 68% 55%, 20% 100%)",
+        }}
       />
 
-      {/* Animated shine */}
+      {/* Top-right crystal */}
       <div
         className="
-          pointer-events-none absolute -left-[120%] top-0 z-20
-          h-full w-1/2 skew-x-[-20deg]
-          bg-gradient-to-r from-transparent via-white/40 to-transparent
-          transition-all duration-700
+          pointer-events-none
+          absolute
+          -right-8
+          top-3
+          h-44
+          w-40
+        "
+        style={{
+          background: `linear-gradient(
+            145deg,
+            ${card.accent},
+            rgba(255,255,255,0.03)
+          )`,
+          clipPath: "polygon(42% 0, 100% 10%, 100% 88%, 20% 58%)",
+          opacity: 0.55,
+        }}
+      />
+
+      {/* Center crystal */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-[38%]
+          top-[24%]
+          h-44
+          w-32
+        "
+        style={{
+          background:
+            "linear-gradient(160deg, rgba(255,255,255,0.20), rgba(255,255,255,0.01))",
+          clipPath: "polygon(50% 0, 100% 38%, 72% 100%, 10% 72%, 0 22%)",
+        }}
+      />
+
+      {/* Center-left darker facet */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-5
+          top-[35%]
+          h-40
+          w-36
+        "
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(0,0,0,0.18), rgba(255,255,255,0.06))",
+          clipPath: "polygon(0 18%, 70% 0, 100% 62%, 40% 100%, 0 75%)",
+        }}
+      />
+
+      {/* Bottom-right crystal */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -bottom-5
+          -right-5
+          h-40
+          w-44
+        "
+        style={{
+          background: `linear-gradient(
+            140deg,
+            rgba(255,255,255,0.05),
+            ${card.accent}
+          )`,
+          clipPath: "polygon(38% 0, 100% 25%, 100% 100%, 0 100%, 12% 42%)",
+          opacity: 0.45,
+        }}
+      />
+
+      {/* Bottom-left crystal */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -bottom-10
+          -left-10
+          h-40
+          w-44
+        "
+        style={{
+          background:
+            "linear-gradient(35deg, rgba(0,0,0,0.22), rgba(255,255,255,0.13))",
+          clipPath: "polygon(0 0, 72% 22%, 100% 100%, 0 100%)",
+        }}
+      />
+
+      {/* ================================= */}
+      {/* CRYSTAL EDGE LINES */}
+      {/* ================================= */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-[15%]
+          top-[34%]
+          h-px
+          w-[85%]
+          -rotate-[25deg]
+          origin-left
+        "
+        style={{
+          background: `linear-gradient(
+            to right,
+            transparent,
+            ${card.accent},
+            transparent
+          )`,
+          opacity: 0.55,
+        }}
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-[45%]
+          top-[8%]
+          h-[85%]
+          w-px
+          rotate-[28deg]
+          origin-top
+        "
+        style={{
+          background: `linear-gradient(
+            to bottom,
+            transparent,
+            ${card.accent},
+            transparent
+          )`,
+          opacity: 0.35,
+        }}
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-[10%]
+          top-[68%]
+          h-px
+          w-[120%]
+          rotate-[17deg]
+        "
+        style={{
+          background: `linear-gradient(
+            to right,
+            transparent,
+            ${card.accent},
+            transparent
+          )`,
+          opacity: 0.35,
+        }}
+      />
+
+      {/* ================================= */}
+      {/* CRYSTAL LIGHT SPOTS */}
+      {/* ================================= */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          right-4
+          top-10
+          h-16
+          w-16
+          rounded-full
+          blur-2xl
+        "
+        style={{
+          background: card.accent,
+          opacity: 0.5,
+        }}
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-8
+          left-5
+          h-20
+          w-20
+          rounded-full
+          blur-3xl
+        "
+        style={{
+          background: card.accent,
+          opacity: 0.25,
+        }}
+      />
+
+      {/* ================================= */}
+      {/* ANIMATED LIGHT REFRACTION */}
+      {/* ================================= */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-[100%]
+          top-0
+          z-30
+          h-full
+          w-[35%]
+          skew-x-[-18deg]
+          bg-gradient-to-r
+          from-transparent
+          via-white/50
+          to-transparent
+          transition-all
+          duration-700
           group-hover:left-[140%]
         "
       />
 
-      {/* Overall Rating */}
-      <div className="absolute left-5 top-5 z-10">
-        <div className="text-4xl font-black leading-none text-black/85">
+      {/* ================================= */}
+      {/* RATING + POSITION */}
+      {/* ================================= */}
+
+      <div className="absolute left-5 top-5 z-20">
+        <div
+          className="text-4xl font-black leading-none"
+          style={{
+            color: card.text,
+            textShadow: "0 2px 8px rgba(0,0,0,0.25)",
+          }}
+        >
           {player.rating}
         </div>
 
-        <div className="mt-1 text-xs font-bold uppercase tracking-widest text-black/60">
-          OVR
+        <div
+          className="
+            mt-1
+            text-xs
+            font-black
+            uppercase
+            tracking-[0.18em]
+          "
+          style={{
+            color: card.subText,
+          }}
+        >
+          {player.position}
         </div>
       </div>
 
-      {/* Avatar */}
-      <div className="relative z-10 flex h-48 items-end justify-center">
-        <div className="flex h-28 w-28 items-center justify-center rounded-full bg-black/10">
-          <span className="text-5xl font-black text-black/25">
+      {/* ================================= */}
+      {/* PLAYER AVATAR */}
+      {/* ================================= */}
+
+      <div
+        className="
+          relative
+          z-20
+          flex
+          h-48
+          items-end
+          justify-center
+        "
+      >
+        <div
+          className="
+            flex
+            h-28
+            w-28
+            items-center
+            justify-center
+            rounded-full
+            backdrop-blur-sm
+          "
+          style={{
+            background: card.avatar,
+            border: `1px solid ${card.accent}`,
+            boxShadow: `
+              inset 0 0 20px rgba(255,255,255,0.08),
+              0 8px 20px rgba(0,0,0,0.20)
+            `,
+          }}
+        >
+          <span
+            className="text-5xl font-black"
+            style={{
+              color: card.text,
+              opacity: 0.75,
+            }}
+          >
             {player.name.charAt(0).toUpperCase()}
           </span>
         </div>
       </div>
 
-      {/* Player Info */}
-      <div className="relative z-10 px-4 pt-4 text-center">
-        <h2 className="truncate text-xl font-black uppercase tracking-wide text-black/85">
+      {/* ================================= */}
+      {/* DIVIDER */}
+      {/* ================================= */}
+
+      <div
+        className="
+          relative
+          z-20
+          mx-auto
+          mt-3
+          h-px
+          w-32
+        "
+        style={{
+          background: `linear-gradient(
+            to right,
+            transparent,
+            ${card.accent},
+            transparent
+          )`,
+        }}
+      />
+
+      {/* ================================= */}
+      {/* PLAYER INFO */}
+      {/* ================================= */}
+
+      <div
+        className="
+          relative
+          z-20
+          px-4
+          pt-3
+          text-center
+        "
+      >
+        <h2
+          className="
+            truncate
+            text-xl
+            font-black
+            uppercase
+            tracking-wide
+          "
+          style={{
+            color: card.text,
+            textShadow: "0 2px 6px rgba(0,0,0,0.20)",
+          }}
+        >
           {player.name}
         </h2>
 
-        <p className="mt-1 text-xs font-bold uppercase tracking-[0.2em] text-black/50">
-          {card.tier}
+        <p
+          className="
+            mt-1
+            text-[10px]
+            font-black
+            uppercase
+            tracking-[0.28em]
+          "
+          style={{
+            color: card.subText,
+          }}
+        >
+          {/* {card.tier} */}
         </p>
->>>>>>> 4f55dd58cb2cd2aca150e9e71b1cc587bd4df86d
       </div>
     </div>
   );
 }
-
-<<<<<<< HEAD
-function getPlayerTier(rating: number) {
-  switch (rating) {
-    case 3:
-      return {
-        name: "Gold",
-        border: "border-yellow-500/60",
-        avatar:
-          "bg-gradient-to-br from-yellow-300 to-yellow-600 text-yellow-950",
-        badge: "bg-yellow-500/15 text-yellow-500",
-      };
-
-    case 2:
-      return {
-        name: "Silver",
-        border: "border-slate-400/60",
-        avatar: "bg-gradient-to-br from-slate-200 to-slate-500 text-slate-800",
-        badge: "bg-slate-400/15 text-slate-400",
-      };
-
-    default:
-      return {
-        name: "Bronze",
-        border: "border-orange-700/60",
-        avatar:
-          "bg-gradient-to-br from-orange-400 to-orange-800 text-orange-950",
-        badge: "bg-orange-700/15 text-orange-500",
-      };
-  }
-}
-=======
-// import type { Player } from '~/types/player';
-
-// type PlayerCardProps = {
-//   player: Player;
-// };
-
-// export default function PlayerCard({ player }: PlayerCardProps) {
-//   return (
-//     <div className="w-48 rounded-xl bg-gray-100 p-4 dark:bg-gray-900">
-//       <div className="relative">
-//         <div className="flex h-48 items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800">
-//           <span className="text-4xl font-bold">{player.rating}</span>
-//         </div>
-//       </div>
-
-//       <div className="mt-2 text-center">
-//         <h2 className="font-bold">{player.name}</h2>
-//       </div>
-//     </div>
-//   );
-// }
->>>>>>> 4f55dd58cb2cd2aca150e9e71b1cc587bd4df86d
