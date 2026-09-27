@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import PlayerSelection from './PlayerSelection';
-import type { Player } from '~/types/player';
-import type { Team } from '~/types/team';
+import { useState } from "react";
+import PlayerSelection from "~/components/teamgeneration/PlayerSelection";
+import type { Player } from "~/types/player";
+import type { Team } from "~/types/team";
 
 type TeamGeneratorProps = {
   players: Player[];
@@ -12,10 +12,10 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
   const [teams, setTeams] = useState<Team[]>([]);
 
   async function generateTeams() {
-    const response = await fetch('http://localhost:3000/teams/', {
-      method: 'POST',
+    const response = await fetch("http://localhost:3000/teams/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         playerIds: selectedPlayers,
@@ -23,7 +23,7 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate teams');
+      throw new Error("Failed to generate teams");
     }
 
     const data = (await response.json()) as Team[];
@@ -35,7 +35,9 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
     <div>
       <h1 className="mb-2 text-3xl font-bold">Generate Teams</h1>
 
-      <p className="mb-6 text-gray-600 dark:text-gray-400">Select the players for this game.</p>
+      <p className="mb-6 text-gray-600 dark:text-gray-400">
+        Select the players for this game.
+      </p>
 
       <PlayerSelection
         players={players}
@@ -77,12 +79,18 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
 
           <div className="grid gap-6 md:grid-cols-2">
             {teams.map((team) => (
-              <div key={team.id} className="rounded-xl bg-gray-100 p-6 dark:bg-gray-900">
+              <div
+                key={team.id}
+                className="rounded-xl bg-gray-100 p-6 dark:bg-gray-900"
+              >
                 <div className="mb-4">
-                  <h3 className="text-xl font-bold">Team {team.id === 1 ? 'A' : 'B'}</h3>
+                  <h3 className="text-xl font-bold">
+                    Team {team.id === 1 ? "A" : "B"}
+                  </h3>
 
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Total Rating: {team.totalRating} · Average: {team.averageRating}
+                    Total Rating: {team.totalRating} · Average:{" "}
+                    {team.averageRating}
                   </p>
                 </div>
 
