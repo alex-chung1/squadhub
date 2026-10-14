@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router";
 
 export default function SquadHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const location = useLocation();
-  const isGeneratePage = location.pathname === '/generate';
+  const isGeneratePage = location.pathname === "/generate";
 
+  // Close menu when clicking outside or pressing Escape
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -15,31 +16,54 @@ export default function SquadHeader() {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, []);
 
+  // Close menu when navigating to another page
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   return (
-    <header className="relative z-50 border-b border-white/[0.08] bg-[#070b12]">
-      <div className="relative mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 lg:px-10">
-        {/* LEFT - MENU */}
+    <header className="relative z-50 border-b border-border-subtle bg-app">
+      <div
+        className="
+          relative mx-auto flex min-h-[80px] max-w-[1600px]
+          items-center justify-between
+          px-4 py-3 sm:px-6 lg:px-10
+        "
+      >
+        {/* LEFT - HAMBURGER MENU */}
         <div ref={menuRef} className="relative z-20">
           <button
             type="button"
             onClick={() => setMenuOpen((current) => !current)}
-            aria-label="Open menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls="squad-header-menu"
             className="
               flex h-11 w-11 items-center justify-center
-              rounded-xl border border-white/[0.08]
-              bg-white/[0.03] text-slate-300
+              rounded-xl border border-border-subtle
+              bg-surface text-silver
               transition-all duration-200
-              hover:border-white/[0.15]
-              hover:bg-white/[0.07]
+              hover:border-silver-dark
+              hover:bg-surface-raised
               hover:text-white
+              focus-visible:outline-2
+              focus-visible:outline-offset-2
+              focus-visible:outline-silver
             "
           >
             <svg
@@ -51,41 +75,64 @@ export default function SquadHeader() {
               strokeLinecap="round"
               strokeLinejoin="round"
               className="h-5 w-5"
+              aria-hidden="true"
             >
-              <path d="M4 6h16" />
-              <path d="M4 12h16" />
-              <path d="M4 18h16" />
+              {menuOpen ? (
+                <>
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </>
+              ) : (
+                <>
+                  <path d="M4 6h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                </>
+              )}
             </svg>
           </button>
 
-          {/* DROPDOWN */}
+          {/* DROPDOWN MENU */}
           {menuOpen && (
-            <div
+            <nav
+              id="squad-header-menu"
+              aria-label="Account navigation"
               className="
                 absolute left-0 top-14
-                w-56 overflow-hidden rounded-2xl
-                border border-white/[0.08]
-                bg-[#10151d]
-                p-2
-                shadow-2xl
+                w-60 overflow-hidden rounded-2xl
+                border border-border-subtle
+                bg-surface p-2
+                shadow-[0_20px_60px_rgba(0,0,0,0.55)]
               "
             >
+              <p
+                className="
+                  px-3 pb-2 pt-2
+                  text-[10px] font-bold uppercase
+                  tracking-[0.2em] text-text-muted
+                "
+              >
+                Navigation
+              </p>
+
+              {/* ACCOUNT */}
               <Link
                 to="/account"
                 onClick={() => setMenuOpen(false)}
                 className="
                   flex items-center gap-3 rounded-xl
-                  px-3 py-3
-                  text-sm font-bold text-slate-300
-                  transition
-                  hover:bg-white/[0.06]
+                  px-3 py-3 text-sm font-semibold
+                  text-silver
+                  transition-colors duration-200
+                  hover:bg-surface-raised
                   hover:text-white
                 "
               >
-                <div
+                <span
                   className="
                     flex h-9 w-9 items-center justify-center
-                    rounded-lg bg-white/[0.05]
+                    rounded-lg border border-border-subtle
+                    bg-surface-raised
                   "
                 >
                   <svg
@@ -97,30 +144,33 @@ export default function SquadHeader() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="h-4 w-4"
+                    aria-hidden="true"
                   >
                     <circle cx="12" cy="8" r="4" />
                     <path d="M4 21a8 8 0 0 1 16 0" />
                   </svg>
-                </div>
+                </span>
                 Account
               </Link>
 
+              {/* REQUESTS */}
               <Link
                 to="/requests"
                 onClick={() => setMenuOpen(false)}
                 className="
                   flex items-center gap-3 rounded-xl
-                  px-3 py-3
-                  text-sm font-bold text-slate-300
-                  transition
-                  hover:bg-white/[0.06]
+                  px-3 py-3 text-sm font-semibold
+                  text-silver
+                  transition-colors duration-200
+                  hover:bg-surface-raised
                   hover:text-white
                 "
               >
-                <div
+                <span
                   className="
                     flex h-9 w-9 items-center justify-center
-                    rounded-lg bg-white/[0.05]
+                    rounded-lg border border-border-subtle
+                    bg-surface-raised
                   "
                 >
                   <svg
@@ -132,6 +182,7 @@ export default function SquadHeader() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="h-4 w-4"
+                    aria-hidden="true"
                   >
                     <path d="M8 2v4" />
                     <path d="M16 2v4" />
@@ -139,55 +190,79 @@ export default function SquadHeader() {
                     <path d="M3 10h18" />
                     <path d="m9 16 2 2 4-4" />
                   </svg>
-                </div>
+                </span>
                 Requests
               </Link>
-            </div>
+            </nav>
           )}
         </div>
 
-        {/* CENTER - BRAND */}
+        {/* CENTER - SQUADHUB BRANDING */}
         <Link
           to="/"
+          aria-label="SquadHub Home"
           className="
-            absolute left-1/2 top-1/2
+            group absolute left-1/2 top-1/2
             flex -translate-x-1/2 -translate-y-1/2
-            items-center gap-3
+            items-center gap-2.5 sm:gap-3
+            transition-opacity duration-200
+            hover:opacity-90
           "
         >
-          <div
+          {/* ACTUAL SQUADHUB LOGO */}
+          <img
+            src="/images/squadhub-logo.png"
+            alt=""
             className="
-              flex h-11 w-11 items-center justify-center
-              rounded-xl bg-emerald-400
-              text-lg font-black text-emerald-950
-              shadow-[0_0_25px_rgba(52,211,153,0.20)]
-              transition-transform
-              hover:scale-105
+              h-12 w-12 shrink-0
+              rounded-xl object-contain
+              shadow-[0_4px_18px_rgba(196,207,222,0.12)]
+              transition-transform duration-300
+              group-hover:scale-105
+              sm:h-14 sm:w-14
             "
-          >
-            S
-          </div>
+          />
 
-          <h1 className="hidden text-xl font-black tracking-tight sm:block">SquadHub</h1>
+          {/* BRAND WORDMARK */}
+          <div className="hidden flex-col sm:flex">
+            <span
+              className="
+                whitespace-nowrap font-brand
+                text-xl font-bold tracking-tight
+                text-text-primary
+                lg:text-2xl
+              "
+            >
+              Squad<span className="text-silver">Hub</span>
+            </span>
+          </div>
         </Link>
 
         {/* RIGHT - PAGE NAVIGATION */}
         <Link
-          to={isGeneratePage ? '/' : '/generate'}
+          to={isGeneratePage ? "/" : "/generate"}
           className="
-            group relative z-20
-            ml-auto flex items-center gap-2.5
-            overflow-hidden rounded-xl
-            bg-emerald-400 px-5 py-3
-            text-sm font-black text-emerald-950
-            shadow-[0_0_20px_rgba(52,211,153,0.18)]
+            group relative z-20 ml-auto
+            flex h-11 items-center justify-center
+            gap-2.5 overflow-hidden rounded-xl
+            border border-[#B8C4D4]/60
+            bg-gradient-to-br
+            from-[#E8EDF5] via-[#C4CFDE] to-[#8998AD]
+            px-3 text-sm font-black text-[#111827]
+            shadow-[0_4px_20px_rgba(196,207,222,0.10)]
             transition-all duration-300
             hover:-translate-y-0.5
-            hover:bg-emerald-300
-            hover:shadow-[0_0_30px_rgba(52,211,153,0.35)]
+            hover:from-white
+            hover:via-[#DDE5EF]
+            hover:to-[#AAB8CC]
+            hover:shadow-[0_6px_26px_rgba(196,207,222,0.22)]
+            focus-visible:outline-2
+            focus-visible:outline-offset-2
+            focus-visible:outline-white
+            sm:px-5
           "
         >
-          {/* LIGHT SWEEP */}
+          {/* METALLIC LIGHT SWEEP */}
           <span
             className="
               pointer-events-none
@@ -195,7 +270,7 @@ export default function SquadHeader() {
               h-full w-1/2
               skew-x-[-20deg]
               bg-gradient-to-r
-              from-transparent via-white/40 to-transparent
+              from-transparent via-white/50 to-transparent
               transition-all duration-700
               group-hover:left-[140%]
             "
@@ -203,7 +278,7 @@ export default function SquadHeader() {
 
           {isGeneratePage ? (
             <>
-              {/* BACK / ROSTER ICON */}
+              {/* BACK ICON */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -217,14 +292,17 @@ export default function SquadHeader() {
                   transition-transform duration-300
                   group-hover:-translate-x-0.5
                 "
+                aria-hidden="true"
               >
                 <path d="M19 12H5" />
                 <path d="m12 19-7-7 7-7" />
               </svg>
 
-              <span className="relative z-10 hidden sm:inline">Back</span>
+              <span className="relative z-10 hidden sm:inline">
+                Back to Roster
+              </span>
 
-              <span className="relative z-10 sm:hidden">Roster</span>
+              <span className="relative z-10 sm:hidden">Back</span>
             </>
           ) : (
             <>
@@ -242,6 +320,7 @@ export default function SquadHeader() {
                   transition-transform duration-300
                   group-hover:rotate-12
                 "
+                aria-hidden="true"
               >
                 <path d="m18 14 4 4-4 4" />
                 <path d="m18 2 4 4-4 4" />
@@ -250,7 +329,9 @@ export default function SquadHeader() {
                 <path d="M14.5 15.3l1 1.5a6 6 0 0 0 5 2.7H22" />
               </svg>
 
-              <span className="relative z-10 hidden sm:inline">Generate Teams</span>
+              <span className="relative z-10 hidden sm:inline">
+                Generate Teams
+              </span>
 
               <span className="relative z-10 sm:hidden">Generate</span>
             </>

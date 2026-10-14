@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import { prisma } from '../db/prisma';
+import bcrypt from "bcrypt";
+import { prisma } from "../db/prisma";
 
 export async function register(name: string, email: string, password: string) {
   const existingUser = await prisma.user.findUnique({
@@ -9,7 +9,7 @@ export async function register(name: string, email: string, password: string) {
   });
 
   if (existingUser) {
-    throw new Error('A user with this email already exists.');
+    throw new Error("A user with this email already exists.");
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
@@ -47,13 +47,13 @@ export async function login(email: string, password: string) {
   });
 
   if (!user) {
-    throw new Error('Invalid email or password.');
+    throw new Error("Invalid email or password.");
   }
 
   const passwordMatches = await bcrypt.compare(password, user.passwordHash);
 
   if (!passwordMatches) {
-    throw new Error('Invalid email or password.');
+    throw new Error("Invalid email or password.");
   }
 
   return {

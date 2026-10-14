@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import PlayerSelection from '~/components/teamgeneration/PlayerSelection';
-import SoccerPitch from '../SoccerPitch';
-import type { Player } from '~/types/player';
-import type { Team } from '~/types/team';
+import { useState } from "react";
+import PlayerSelection from "~/components/teamgeneration/PlayerSelection";
+import SoccerPitch from "../SoccerPitch";
+import type { Player } from "~/types/player";
+import type { Team } from "~/types/team";
 
 type TeamGeneratorProps = {
   players: Player[];
@@ -13,10 +13,10 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
   const [teams, setTeams] = useState<Team[]>([]);
 
   async function generateTeams() {
-    const response = await fetch('http://localhost:3000/teams/', {
-      method: 'POST',
+    const response = await fetch("http://localhost:3000/teams/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         playerIds: selectedPlayers,
@@ -24,7 +24,7 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate teams');
+      throw new Error("Failed to generate teams");
     }
 
     const data = (await response.json()) as Team[];
@@ -42,17 +42,14 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
       <header className="mb-10">
         <div className="mb-3 flex items-center gap-3">
           <div className="h-px w-10 bg-cyan-400/60" />
-
-          <span className="text-xs font-black uppercase tracking-[0.25em] text-cyan-300">
-            Match Setup
-          </span>
+          <h1 className="text-4xl font-black uppercase tracking-[0.25em] text-cyan-300">
+            Generate Teams
+          </h1>
         </div>
 
-        <h1 className="text-4xl font-black tracking-tight md:text-5xl">Generate Teams</h1>
-
         <p className="mt-3 max-w-xl text-sm leading-6 text-slate-400">
-          Select the players for this game and SquadHub will generate balanced teams based on player
-          ratings.
+          Select the players for this game and SquadHub will generate balanced
+          teams based on player ratings.
         </p>
       </header>
 
@@ -71,7 +68,9 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
               Selected
             </span>
 
-            <span className="ml-2 text-sm font-black text-white">{selectedPlayers.length}</span>
+            <span className="ml-2 text-sm font-black text-white">
+              {selectedPlayers.length}
+            </span>
           </div>
         </div>
 
@@ -103,7 +102,7 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
 
           <p className="mt-1 text-xs text-slate-500">
             {selectedPlayers.length === 0
-              ? 'Select players to continue.'
+              ? "Select players to continue."
               : `${selectedPlayers.length} players selected.`}
           </p>
         </div>
@@ -172,7 +171,9 @@ export default function TeamGenerator({ players }: TeamGeneratorProps) {
                 </span>
               </div>
 
-              <h2 className="text-3xl font-black tracking-tight">Generated Teams</h2>
+              <h2 className="text-3xl font-black tracking-tight">
+                Generated Teams
+              </h2>
             </div>
 
             <p className="hidden text-xs font-bold uppercase tracking-[0.15em] text-slate-600 sm:block">

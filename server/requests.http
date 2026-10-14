@@ -15,12 +15,12 @@ Content-Type: application/json
 }
 
 ### Edit player	
-PATCH	http://localhost:3000/players/5
+PATCH	http://localhost:3000/players/1
 Content-Type: application/json
 
 {
-  "name": "Mahian",
-  "rating": 88
+  "name": "Monu",
+  "rating": 90
 }
 ### Delete player	
 DELETE	http://localhost:3000/players/6
