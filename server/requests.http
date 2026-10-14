@@ -1,16 +1,29 @@
-### Create player
+### Get players
+GET http://localhost:3000/players/
+
+
+### Get player by ID	
+GET	http://localhost:3000/players/1
+
+### Add player
 POST http://localhost:3000/players/
 Content-Type: application/json
 
 {
-  "name": "Alex",
-  "rating": 85
+  "name": "Munem",
+  "rating": 82
 }
 
+### Edit player	
+PATCH	http://localhost:3000/players/5
+Content-Type: application/json
 
-### Get players
-GET http://localhost:3000/players/
-
+{
+  "name": "Mahian",
+  "rating": 88
+}
+### Delete player	
+DELETE	http://localhost:3000/players/6
 
 ### Generate Team
 POST http://localhost:3000/teams/

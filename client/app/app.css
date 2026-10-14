@@ -18,13 +18,14 @@ body {
   }
 }
 
-/* .font-brand {
-  font-family: "Montserrat", sans-serif;
-  letter-spacing: 0.16em;
-} */
-
 .font-brand {
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* .font-brand {
   font-family: "Montserrat", sans-serif;
   font-weight: 800;
   letter-spacing: 0.06em;
-}
+} */

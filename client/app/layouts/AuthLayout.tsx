@@ -45,8 +45,8 @@ export default function AuthLayout() {
             />
 
             <h1 className="font-brand text-3xl font-bold tracking-tight">
-              <span className="text-white">Squad</span>
-              <span className="text-emerald-400">Hub</span>
+              <span className="text-emerald-400">Squad</span>
+              <span className="text-white">Hub</span>
             </h1>
           </div>
         </Link>
