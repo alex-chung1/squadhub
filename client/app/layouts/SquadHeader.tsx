@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { Form, Link, useLocation } from 'react-router';
 import {
   CalendarDays,
   CircleUserRound,
   Film,
   House,
+  LogOut,
   Menu,
   MessageSquare,
   Shield,
@@ -18,7 +19,7 @@ const menuItems = [
   { label: 'Video Highlights', href: null, icon: Film },
   { label: 'Account', href: null, icon: CircleUserRound },
   { label: 'Messages', href: null, icon: MessageSquare },
-  { label: 'Logout', href: '/logout', icon: MessageSquare },
+  { label: 'Logout', href: '/logout', icon: LogOut },
 ];
 
 export default function SquadHeader() {
@@ -110,6 +111,16 @@ export default function SquadHeader() {
                     )}
                   </>
                 );
+
+                if (item.label === 'Logout') {
+                  return (
+                    <Form key={item.label} method="post" action="/logout">
+                      <button type="submit" className={className}>
+                        {content}
+                      </button>
+                    </Form>
+                  );
+                }
 
                 return item.href ? (
                   <Link
