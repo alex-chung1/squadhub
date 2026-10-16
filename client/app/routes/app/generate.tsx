@@ -1,6 +1,5 @@
 import type { Route } from "./+types/generate";
 import TeamGenerator from "~/components/teamgeneration/TeamGenerator";
-import SquadHeader from "~/components/SquadHeader";
 import type { Player } from "~/types/player";
 
 const API_URL = "http://localhost:3000";
@@ -66,10 +65,8 @@ export async function loader() {
 
 export default function Generate({ loaderData }: Route.ComponentProps) {
   return (
-    <main className="min-h-screen bg-[#070b12] text-white">
-      <SquadHeader />
-
-      <div className="mx-auto max-w-[1600px] px-6 py-10 lg:px-10">
+    <main className="min-h-screen bg-[#0D1014] text-white">
+      <div className="mx-auto max-w-[1600px] px-5 pb-16 pt-24 sm:px-8 lg:px-10 lg:pt-10">
         <TeamGenerator players={loaderData} />
       </div>
     </main>
